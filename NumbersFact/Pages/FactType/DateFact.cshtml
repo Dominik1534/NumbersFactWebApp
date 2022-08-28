@@ -1,0 +1,46 @@
+﻿@page
+@model NumbersFact.Pages.FactType.DateFactModel
+
+<form method="post" >
+	
+	<div class="px-4 py-5 my-5 text-center ">
+	
+	<h1 class="display-5 fw-bold">Date Fact</h1>
+	<div class="col-lg-6 mx-auto ">
+		<main class="px-3">
+
+			@if (Model.Fact == null)
+			{
+				<p class="lead mb-4"> Please write date below and enjoy your fact. </p>
+			}
+			else
+			{
+				<p class="lead mb-4">@Model.Fact </p>
+			}
+		
+			<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+				<div class="col-sm-6">
+					<label for="Day" class="form-label">Day number</label>
+					<input type="number" asp-for="Day" class="form-control" id="Day" placeholder="Write day number" value="" required="">
+					<div class="invalid-feedback">
+						Valid first name is required.
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label for="Day" class="form-label">Month number</label>
+					<input type="number" asp-for="Month" class="form-control" id="Month" placeholder="Write month number" value="" required="">
+					<div class="invalid-feedback">
+						Valid first name is required.
+					</div>
+				</div>
+			</div>
+			<hr class=" opacity-50">
+			<p class="lead">
+				
+				<button type="submit" value="Submit" class="btn btn-outline-secondary btn-lg px-4 text-white">Get Fact</button>
+			</p>
+			</main>
+	</div>
+</div>
+</form>
+
