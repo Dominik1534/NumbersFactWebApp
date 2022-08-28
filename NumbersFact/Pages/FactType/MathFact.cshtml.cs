@@ -10,15 +10,50 @@ namespace NumbersFact.Pages.FactType
     public class MathFactModel : PageModel
     {
         [BindProperty]
-        public string Fact { get; set; }
+        public string? Fact { get; set; }
         [BindProperty]
         public int Number { get; set; }
-      
+        [BindProperty]
+        public string? FactTranslated { get; set; }
+
+        private string _fact="";
+        
         public void OnGet()
         {
          
         }
 
+        public async Task<IActionResult> OnPostTranslate()
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("https://google-translate1.p.rapidapi.com/language/translate/v2"),
+                Headers =
+                {
+                    { "X-RapidAPI-Key", "d53d1552b3mshe7ab189d6e7c62bp148089jsn2aa8e3c4f838" },
+                    { "X-RapidAPI-Host", "google-translate1.p.rapidapi.com" },
+                },
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "q", $"{FactTranslated}" },
+                    { "target", "pl" },
+                    { "source", "en" },
+                }),
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                
+                await using var stream = await response.Content.ReadAsStreamAsync();
+                var dto = await JsonSerializer.DeserializeAsync<TranslationDto>(stream);
+                TranslationItem factItem = new TranslationItem() { translatedText = dto.data.translations[0].translatedText };
+                Fact = factItem.translatedText;
+            }
+
+            return Page();
+        }
         public async Task<IActionResult> OnPost()
         {
 
@@ -41,6 +76,7 @@ namespace NumbersFact.Pages.FactType
                 var dto = await JsonSerializer.DeserializeAsync<FactDto>(stream);
                 FactItem factItem = new FactItem() { Text = dto.text };
                 Fact = factItem.Text;
+                FactTranslated=Fact;
             }
 
 

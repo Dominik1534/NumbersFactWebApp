@@ -30,8 +30,11 @@
 				</div>
 				<hr class=" opacity-50">
 				<p class="lead">
-				
 					<button type="submit" value="Submit" class="btn btn-outline-secondary btn-lg px-4 text-white">Get Fact</button>
+					<input type="hidden" asp-for="@Model.FactTranslated" value="@Model.FactTranslated" />
+				</p>
+				<p class="lead">
+					<button type="submit" value="Submit" asp-page-handler="Translate" class="btn btn-outline-secondary btn-lg px-4 text-white">Translate Fact to PL</button>
 				</p>
 			</main>
 		</div>
